@@ -3,22 +3,14 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
 	//"time"
 	"beemer/logger"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	dbUsername   = "Admin"
-	dbPassword   = "Afslag01!"
-	dbHost       = "127.0.0.1"
-	dbPort       = 3306
-	dbName       = "api-keys"
-	dbTLSEnabled = false
-)
-
-func InitializeDB() (*sql.DB, error) {
+func InitializeDB(dbUsername string, dbPassword string, dbHost string, dbPort int, dbName string, dbTLSEnabled bool) (*sql.DB, error) {
 	//currentTime := time.Now()
 	//currentDate := currentTime.Format("2006-01-02")
 
@@ -43,7 +35,6 @@ func InitializeDB() (*sql.DB, error) {
 
 	return db, nil
 }
-
 
 func InitializeDatabaseData(db *sql.DB, currentDate string) error {
 	// ... (existing code)
