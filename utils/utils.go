@@ -6,9 +6,15 @@ import (
 	"fmt"
 	"time"
 )
+
+var randomGenerator *rand.Rand
 const charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-func hypixelXPToLevel(lvl float64) int {
+func init() {
+    randomGenerator = rand.New(rand.NewSource(time.Now().UnixNano()))
+}
+
+func HypixelXPToLevel(lvl float64) int {
 	var xp int = int(lvl)
 	level := 1 + int(math.Floor(math.Sqrt(float64(2*xp+30625))/50)-2.5)
 	return level
@@ -24,32 +30,35 @@ func hypixelXPToLevel(lvl float64) int {
 // (5 = 0-9) -
 // (6 = a-z) -
 // (7 = A-Z) -
-func generateRandomString(charinput int, length int) string {
+func GenerateRandomString(charinput int, length int) string {
 	b := make([]byte, length)
-	charset := ""
+	var charset string
+
 	switch charinput {
 	case 1:
-		const charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	case 2:
-		const charset = "0123456789abcdefghijklmnopqrstuvwxyz"
+		charset = "0123456789abcdefghijklmnopqrstuvwxyz"
 	case 3:
-		const charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	case 4:
-		const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	case 5:
-		const charset = "0123456789"
+		charset = "0123456789"
 	case 6:
-		const charset = "abcdefghijklmnopqrstuvwxyz"
+		charset = "abcdefghijklmnopqrstuvwxyz"
 	case 7:
-		const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	default:
-		const charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	}
+
 	for i := range b {
 		b[i] = charset[rand.Intn(len(charset))]
 	}
 	return string(b)
 }
+
 
 // functionName is a description of what the function does. 
 //
@@ -58,7 +67,7 @@ func generateRandomString(charinput int, length int) string {
 // char = the character/string you want to insert in str in format of string ("")
 //
 // n = int of the interval to insert char
-func insertCharacterIntoString(str string, char string, n int) string {
+func InsertCharacterIntoString(str string, char string, n int) string {
 	var result string
 	for i := 0; i < len(str); i += n {
 		end := i + n
@@ -78,8 +87,7 @@ func GenerateRandomNumber(min, max int) int {
     if max <= min {
         return min
     }
-    rand.Seed(time.Now().UnixNano())
-    return rand.Intn(max-min+1) + min
+    return randomGenerator.Intn(max-min+1) + min
 }
 
 // IsPrime checks if a number is a prime number.
